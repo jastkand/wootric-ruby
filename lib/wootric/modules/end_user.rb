@@ -1,8 +1,11 @@
 class Wootric::Client
   module EndUser
 
-    def end_users
-      users = connection.get("end_users")
+    def end_users(options = {})
+      permitted_options = options.select do |key|
+        [:page, :per_page, :created, :email, :sort_order].include?(key)
+      end
+      users = connection.get("end_users", permitted_options)
       users_json = JSON.parse(users.body)
       users_json
     end
