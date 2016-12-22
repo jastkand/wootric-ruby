@@ -26,7 +26,7 @@ API actions are available as methods on the client object. Currently, the Wootri
 | Action 																	 | Method             					                           |
 |:-----------------------------------------|:--------------------------------------------------------|
 | **End User**                             |                   					                             |
-| Return a collection of all users        | `#end_users`           																 |
+| Return a collection of all users        | `#end_users(options = {})`           																 |
 | Return a specific user         	       | `#find_end_user(user_id)`                               |
 | Create an end user 			    	           | `#create_end_user(email, options={})`                   |
 | Update an end user                       | `#edit_end_user(user_id, options={})`                   |
@@ -99,10 +99,33 @@ client.end_users
 ]
 ```
 
+You can specify the scope parameters as an argument to the `#end_users` method, like
+
+```ruby
+client.end_users(email: 'nps@example.com', created: { lt: 1482427321 }, sort_order: 'desc')
+
+#=>
+[
+  {
+    "id": 1,
+    "created_at" : "2014-12-01 18:36:59",
+    "updated_at" : "2014-12-01 18:36:59",
+    "email": "nps@example.com",
+    "last_surveyed": null,
+    "external_created_at": null,
+    "user_id": 16,
+    "page_views_count" : 1,
+    "properties": {"plan": "Small Business", "product": "Example"}
+  }
+]
+```
+
+Here you can find the list of all available scope parameters - http://docs.wootric.com/api/#get-all-end-users
+
 ### You can find specific end user by their user_id.
 
 ```ruby
-client.find_end_user("16313044")
+client.find_end_user(2)
 
 #=>
 {
@@ -121,7 +144,7 @@ client.find_end_user("16313044")
 ### You can list all responses.
 
 ```ruby
-client.responses(page: 5, per_page: 10, sort_order: dsc)
+client.responses(page: 5, per_page: 10, sort_order: 'desc')
 
 #=>
 [
